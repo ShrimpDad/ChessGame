@@ -1,9 +1,42 @@
-﻿using System;
+﻿using ChessGame;
+using System;
+using System.Data;
+using System.IO;
 
 namespace Chess
 {
     internal class ChessGame
     {
+        public ChessGame()
+        {
+            return;
+        }
+
+        internal static void LoadPieceSetup()
+        {
+            string[] pieceSetupData = System.IO.File.ReadAllLines(@"C:\ChessFiles\PieceSetup.csv");
+            //string[] boardPositionTranslatorData = System.IO.File.ReadAllLines(@"C:\ChessFiles\BoardPositionTranslator.csv");
+
+            for (int i = 1; i < pieceSetupData.Length; i++)
+            {
+                string[] rowData = pieceSetupData[i].Split(',');
+                int[] rowDataInt = Array.ConvertAll(rowData, int.Parse);
+                bool rowDataBool = false;
+
+                if (rowData[5] == "TRUE")
+                {
+                    rowDataBool = true;
+                }
+                else
+                {
+                    rowDataBool = false;
+                }
+
+                Piece setupPiece = new Piece(rowData[0], rowData[1], rowDataInt[2], rowData[3], rowDataInt[4], rowDataBool);
+            }
+        }
+
+
         internal static void Greet()
         {
             Console.WriteLine("Welcome to Nightmare Chess where the code is sustained soley by horrifyingly flaky and inefficient methods");
