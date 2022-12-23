@@ -1,5 +1,6 @@
 ﻿using ChessGame;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 
@@ -7,42 +8,74 @@ namespace Chess
 {
     internal class ChessGame
     {
+        public static string chessBoard = "";
+        public static bool firstTimeSetup = true;
+        public static Piece chessPiece;
+        public static List<Piece> allChessPieces = new List<Piece>();
+        public static Tile chessTile;
+        public static List<Tile> allChessTiles = new List<Tile>();
+
         public ChessGame()
         {
             return;
         }
 
-        internal static void LoadPieceSetup()
+        internal static void Greet()
         {
-            string[] pieceSetupData = System.IO.File.ReadAllLines(@"C:\ChessFiles\PieceSetup.csv");
-            //string[] boardPositionTranslatorData = System.IO.File.ReadAllLines(@"C:\ChessFiles\BoardPositionTranslator.csv");
+            Console.WriteLine("Welcome to Nightmare Chess");
+            Console.WriteLine("");
+            System.Threading.Thread.Sleep(2000);
+            Console.Clear();
+        }
+
+        internal static void LoadResource()
+        {
+            LoadPieceSetup();
+            LoadBoardTiles();
+        }
+
+        internal static void LoadPieceSetup()
+        {           
+            string[] pieceSetupData = File.ReadAllLines(@"C:\ChessFiles\PieceSetup.csv");
 
             for (int i = 1; i < pieceSetupData.Length; i++)
-            {
+                {
                 string[] rowData = pieceSetupData[i].Split(',');
-                int[] rowDataInt = Array.ConvertAll(rowData, int.Parse);
-                bool rowDataBool = false;
 
+                /*
+                bool.Parse(rowData[5]);
+
+                bool pieceInPlayBool = false;
                 if (rowData[5] == "TRUE")
                 {
-                    rowDataBool = true;
+                    pieceInPlayBool = true;
                 }
                 else
                 {
-                    rowDataBool = false;
+                    pieceInPlayBool = false;
                 }
+                */
 
-                Piece setupPiece = new Piece(rowData[0], rowData[1], rowDataInt[2], rowData[3], rowDataInt[4], rowDataBool);
+                chessPiece = new Piece(rowData[0], rowData[1], Int16.Parse(rowData[2]), rowData[3], Int16.Parse(rowData[4]), bool.Parse(rowData[5]));
+                allChessPieces.Add(chessPiece);
             }
         }
 
-
-        internal static void Greet()
+        internal static void LoadBoardTiles()
         {
-            Console.WriteLine("Welcome to Nightmare Chess where the code is sustained soley by horrifyingly flaky and inefficient methods");
-            Console.WriteLine("");
-            System.Threading.Thread.Sleep(5000);
-            Console.Clear();
+            string[] boardPositionTranslatorData = File.ReadAllLines(@"C:\ChessFiles\BoardPositionTranslator.csv");
+
+            for (int i = 1; i < boardPositionTranslatorData.Length; i++)
+            {
+                string[] rowData = boardPositionTranslatorData[i].Split(',');
+                chessTile = new Tile(Int16.Parse(rowData[0]), rowData[1], Int16.Parse(rowData[2]), rowData[3]);
+                allChessTiles.Add(chessTile);
+            }
+        }
+
+        internal static void PrintBoard()
+        {
+                   
         }
 
         internal static void RunGame()

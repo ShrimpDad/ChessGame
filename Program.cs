@@ -8,7 +8,7 @@ namespace Chess
         {
             ChessGame.Greet();
 
-            ChessGame.LoadPieceSetup();
+            ChessGame.LoadResource();
 
             ChessGame.RunGame();
         }
