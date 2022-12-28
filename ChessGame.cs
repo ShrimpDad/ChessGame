@@ -1,7 +1,6 @@
 ﻿using ChessGame;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 
 namespace Chess
@@ -24,46 +23,37 @@ namespace Chess
         {
             Console.WriteLine("Welcome to Nightmare Chess");
             Console.WriteLine("");
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(200);
             Console.Clear();
         }
 
-        internal static void LoadResource()
+        internal static void LoadResources()
         {
             LoadPieceSetup();
             LoadBoardTiles();
+            System.Threading.Thread.Sleep(2000);
         }
 
         internal static void LoadPieceSetup()
-        {           
-            string[] pieceSetupData = File.ReadAllLines(@"C:\ChessFiles\PieceSetup.csv");
+        {
+            string[] pieceSetupData = File.ReadAllLines("PieceSetup.csv");
 
             for (int i = 1; i < pieceSetupData.Length; i++)
-                {
+            {
                 string[] rowData = pieceSetupData[i].Split(',');
-
-                /*
-                bool.Parse(rowData[5]);
-
-                bool pieceInPlayBool = false;
-                if (rowData[5] == "TRUE")
-                {
-                    pieceInPlayBool = true;
-                }
-                else
-                {
-                    pieceInPlayBool = false;
-                }
-                */
 
                 chessPiece = new Piece(rowData[0], rowData[1], Int16.Parse(rowData[2]), rowData[3], Int16.Parse(rowData[4]), bool.Parse(rowData[5]));
                 allChessPieces.Add(chessPiece);
             }
+            /*for (int i = 0; i < allChessPieces.Count; i++)
+            {
+                Console.WriteLine(allChessPieces[i]);
+            }*/
         }
 
         internal static void LoadBoardTiles()
         {
-            string[] boardPositionTranslatorData = File.ReadAllLines(@"C:\ChessFiles\BoardPositionTranslator.csv");
+            string[] boardPositionTranslatorData = File.ReadAllLines("BoardPositionTranslator.csv");
 
             for (int i = 1; i < boardPositionTranslatorData.Length; i++)
             {
@@ -71,6 +61,7 @@ namespace Chess
                 chessTile = new Tile(Int16.Parse(rowData[0]), rowData[1], Int16.Parse(rowData[2]), rowData[3]);
                 allChessTiles.Add(chessTile);
             }
+            
         }
 
         internal static void PrintBoard()
